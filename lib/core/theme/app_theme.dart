@@ -118,7 +118,7 @@ class AppTheme {
       // Cấu hình thanh Navigation Bar phía dưới
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: StitchColors.darkBackground,
-        indicatorColor: StitchColors.primary.withOpacity(0.2),
+        indicatorColor: StitchColors.primary.withValues(alpha: 0.2),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return GoogleFonts.plusJakartaSans(

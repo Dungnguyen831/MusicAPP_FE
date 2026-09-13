@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
@@ -18,6 +20,8 @@ Future<AudioHandler> initAudioService() async {
 class AudioPlayerHandler extends BaseAudioHandler {
   final _player = AudioPlayer();
   final _playlist = ConcatenatingAudioSource(children: []);
+  StreamSubscription<Duration?>? _durationSubscription;
+  StreamSubscription<PlayerState>? _playerStateSubscription;
 
   AudioPlayerHandler() {
     _loadEmptyPlaylist();
@@ -29,12 +33,12 @@ class AudioPlayerHandler extends BaseAudioHandler {
     try {
       await _player.setAudioSource(_playlist);
     } catch (e) {
-      print("Error: $e");
+      log("Error: $e");
     }
   }
 
   void _listenForDurationChanges() {
-    _player.durationStream.listen((duration) {
+    _durationSubscription = _player.durationStream.listen((duration) {
       if (duration != null) {
         mediaItem.add(mediaItem.value?.copyWith(duration: duration));
       }
@@ -42,7 +46,7 @@ class AudioPlayerHandler extends BaseAudioHandler {
   }
 
   void _listenForPlayerStateChanges() {
-    _player.playerStateStream.listen((playerState) {
+    _playerStateSubscription = _player.playerStateStream.listen((playerState) {
       final playing = playerState.playing;
       final processingState = playerState.processingState;
       playbackState.add(playbackState.value.copyWith(
@@ -82,27 +86,39 @@ class AudioPlayerHandler extends BaseAudioHandler {
   @override
   Future<void> stop() async {
     await _player.stop();
+    await _durationSubscription?.cancel();
+    await _playerStateSubscription?.cancel();
+    _durationSubscription = null;
+    _playerStateSubscription = null;
     return super.stop();
   }
 
+  Future<void> _dispose() async {
+    await _durationSubscription?.cancel();
+    _durationSubscription = null;
+    await _playerStateSubscription?.cancel();
+    _playerStateSubscription = null;
+    await _player.dispose();
+  }
+
   @override
-  Future<void> customAction(String name, [Map<String, dynamic>? arguments]) async {
+  Future<void> customAction(String name, [Map<String, dynamic>? extras]) async {
     if (name == 'dispose') {
-      await _player.dispose();
-      super.customAction(name, arguments);
+      await _dispose();
+      await super.customAction(name, extras);
     } else {
-      super.customAction(name, arguments);
+      await super.customAction(name, extras);
     }
   }
 
   @override
+
   Future<void> onTaskRemoved() async {
     await _player.stop();
-    await super.onTaskRemoved();
   }
 
   @override
-  Future<void> onSkipToQueueItem(int index) async {
+  Future<void> skipToQueueItem(int index) async {
     await _player.seek(Duration.zero, index: index);
   }
 }
