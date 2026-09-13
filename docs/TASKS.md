@@ -12,7 +12,7 @@ Tài liệu này vạch ra lộ trình phát triển chi tiết cho ứng dụng
 - [x] **Task 1.1:** Khai báo đầy đủ các dependencies cần thiết trong file `pubspec.yaml` (`flutter_riverpod`, `just_audio`, `audio_service`, `dio`, `hive_flutter`, `path_provider`, `flutter_svg`, `google_fonts`, v.v.).
 - [x] **Task 1.2:** Thiết lập hệ thống thư mục Feature-First chuẩn theo tài liệu `ARCHITECTURE.md` (`lib/core/`, `lib/features/auth/`, `lib/features/home/`, v.v.).
 - [x] **Task 1.3:** Định nghĩa Stitch Color Palette và cấu hình Dark Theme mặc định trong `lib/core/theme/app_theme.dart`.
-- [x] **Task 1.4:** Thiết kế các thành phần UI dùng chung và hiệu ứng Glassmorphism (Liquid Glass) bằng cách kết hợp `BackdropFilter` mờ nhòe với viền phát sáng gradient mỏng.
+- [x] **Task 1.4:** Tích hợp thư viện `liquid_glass_widgets` và hoàn thiện widget dùng chung `LiquidGlassCard` chuẩn Liquid Glass Dark Mode (với shader khúc xạ, specular rim highlights và squircle superellipse).
 
 ---
 
@@ -40,16 +40,10 @@ Tài liệu này vạch ra lộ trình phát triển chi tiết cho ứng dụng
 ### Phase 4: Home UI & Auth (Màn hình Trang chủ & Phân quyền)
 *Xây dựng giao diện Trang chủ phong cách Stitch Design và hệ thống phân quyền sử dụng Riverpod.*
 
-- [ ] **Task 4.1:** Hiện thực `AuthController` bằng Riverpod để quản lý đăng nhập, đăng ký và Guest Mode.
-- [ ] **Task 4.2:** Thiết kế BottomSheet yêu cầu Đăng nhập/Đăng ký khi người dùng Guest cố gắng sử dụng tính năng yêu cầu tài khoản (tạo Playlist, thích nhạc).
-- [x] **Task 4.3:** Xây dựng màn hình Trang chủ (`HomeScreen`) bao gồm:
-  - [x] `home_header.dart`: Bên trái: Avatar tròn và chữ "Xin chào, Dũng" (Font Plus Jakarta Sans, Bold). Bên phải: 2 nút tròn kính mờ `Search` và `Notification` (kèm icon tương ứng).
-  - [x] `category_filter_bar.dart`: Thanh cuộn ngang các nút Filter dạng Pill: "All", "New Artists", "Hot Tracks", "Editor\rsquos Picks". Tab "All" đang active: Nền `StitchColors.primary` (#C084C4), chữ đen đậm. Các tab còn lại: Nền kính mờ bo góc 20px, chữ màu `StitchColors.neutral`.
-  - [x] `for_you_banner.dart`: Tiêu đề mục "For you" (H2). Thẻ Banner nổi bật cuộn ngang (Horizontal Carousel): Card Liquid Glass bo góc 24px với nền gradient/ảnh mờ bên phải. Tiêu đề "Feel the Beat", mô tả "Explore trending tracks and hidden gems curated just for you." Nút bấm pill "Start Listening" màu tím pastel viền sáng.
-  - [x] `popular_song_list.dart`: Tiêu đề mục "Popular" kèm nút "Show all >" bên phải. Danh sách các bài hát (lấy từ Mock Data đã tạo ở Phase 2): Mỗi bài: Thumbnail bo góc 14px, Tên bài hát (H3), Tag/Thể loại (Body Medium), nút Play tròn nền xám mờ (icon Play trắng).
-  - [x] `floating_liquid_nav_bar.dart`: Thanh điều hướng đáy dạng Floating Pill bo tròn hoàn toàn (Radius 36px) dùng `BackdropFilter`. Nút Home đang active nằm trong vòng tròn màu `StitchColors.primary`, bên cạnh là icon Thư viện/Nhạc và Cài đặt.
-  - [x] `home_screen.dart`: Gom tất cả các widget trên vào màn hình chính dạng cuộn `SingleChildScrollView`. Đảm bảo có `padding bottom: 100px` để danh sách không bị che bởi Floating Nav Bar.
-- [ ] **Task 4.4:** Hiện thực logic hiển thị Personalized Playlist và Recently Played chỉ dành cho Authenticated User.
+- [x] **Task 4.1 (UI Home):** Xây dựng màn hình Trang chủ (`HomeScreen`) chuẩn Stitch Liquid Glass (bao gồm `HomeHeader`, `CategoryFilterBar`, `ForYouBanner`, `PopularSongList`, và `FloatingLiquidNavBar`).
+- [x] **Task 4.2 (Auth State):** Hiện thực `AuthRepository` và `AuthController` bằng Riverpod để quản lý đăng nhập, đăng ký và Guest Mode.
+- [x] **Task 4.3 (Guest Guard):** Thiết kế `GuestBottomSheet` để cảnh báo / yêu cầu đăng nhập khi người dùng Guest truy cập tính năng cần tài khoản.
+- [x] **Task 4.4 (Personalization):** Hiện thực hiển thị Personalized Playlist và Recently Played phân theo `AuthState`.
 
 ---
 
