@@ -24,14 +24,16 @@ class ForYouBanner extends StatelessWidget {
             height: 200, // Adjust height as needed
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
+              addRepaintBoundaries: true,
+              addAutomaticKeepAlives: false,
               itemCount: 3, // Mock data, replace with actual data
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: LiquidGlassCard(
                     borderRadius: 24.0,
-                    blur: 15.0,
-                    backgroundColor: StitchColors.darkSurface.withOpacity(0.4),
+                    blur: 14.0,
+                    backgroundColor: StitchColors.darkSurface.withValues(alpha: 0.4),
                     padding: EdgeInsets.zero,
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
@@ -39,16 +41,21 @@ class ForYouBanner extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             Colors.transparent,
-                            StitchColors.primary.withOpacity(0.3),
+                            StitchColors.primary.withValues(alpha: 0.3),
                           ],
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                         ),
                         borderRadius: BorderRadius.circular(24.0),
-                        image: const DecorationImage(
-                          image: NetworkImage('https://picsum.photos/400/200'), // Replace with actual image
+                        image: DecorationImage(
+                          image: const ResizeImage(
+                            NetworkImage('https://picsum.photos/400/200'),
+                            width: 800,
+                            height: 400,
+                          ),
                           fit: BoxFit.cover,
-                          alignment: Alignment.centerRight, // Align image to the right
+                          alignment: Alignment.centerRight,
+                          onError: (_, _) {},
                         ),
                       ),
                       child: Padding(
@@ -77,7 +84,7 @@ class ForYouBanner extends StatelessWidget {
                                 // TODO: Implement start listening functionality
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: StitchColors.primary.withOpacity(0.2),
+                                backgroundColor: StitchColors.primary.withValues(alpha: 0.2),
                                 foregroundColor: StitchColors.primary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),

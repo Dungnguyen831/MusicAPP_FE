@@ -80,7 +80,7 @@ class _CategoryFilterBarState extends State<CategoryFilterBar> {
     return LiquidGlassCard(
       borderRadius: 20.0,
       blur: 10.0,
-      backgroundColor: StitchColors.darkSurface.withOpacity(0.3),
+      backgroundColor: StitchColors.darkSurface.withValues(alpha: 0.3),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: GestureDetector(
         onTap: () {

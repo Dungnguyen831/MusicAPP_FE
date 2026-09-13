@@ -1,6 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project_test/core/theme/stitch_colors.dart';
+import 'package:project_test/core/widgets/liquid_glass_card.dart';
 
 class FloatingLiquidNavBar extends StatefulWidget {
   final int selectedIndex;
@@ -43,28 +43,22 @@ class _FloatingLiquidNavBarState extends State<FloatingLiquidNavBar> {
     final barWidth = MediaQuery.of(context).size.width - 48; // 24 * 2
     _itemWidth = barWidth / 3; 
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 24.0, left: 24.0, right: 24.0),
-        child: GestureDetector(
-          onTapUp: _handleTapUp,
-          onHorizontalDragUpdate: _handleDragUpdate,
-          onHorizontalDragEnd: _handleDragEnd,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(36.0),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-              child: Container(
+    return RepaintBoundary(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 24.0, left: 24.0, right: 24.0),
+          child: GestureDetector(
+            onTapUp: _handleTapUp,
+            onHorizontalDragUpdate: _handleDragUpdate,
+            onHorizontalDragEnd: _handleDragEnd,
+            child: LiquidGlassCard(
+              borderRadius: 36.0,
+              blur: 16.0,
+              backgroundColor: StitchColors.darkSurface.withValues(alpha: 0.45),
+              padding: EdgeInsets.zero,
+              child: SizedBox(
                 height: 72,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF221F22).withOpacity(0.45),
-                  borderRadius: BorderRadius.circular(36.0),
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.12),
-                    width: 1.2,
-                  ),
-                ),
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
@@ -87,7 +81,7 @@ class _FloatingLiquidNavBarState extends State<FloatingLiquidNavBar> {
                             borderRadius: BorderRadius.circular(28.0),
                             boxShadow: [
                               BoxShadow(
-                                color: StitchColors.primary.withOpacity(0.3),
+                                color: StitchColors.primary.withValues(alpha: 0.3),
                                 blurRadius: 10,
                                 spreadRadius: 2,
                               ),
